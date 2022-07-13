@@ -5,7 +5,7 @@ Exercise Validation 1000 Record Data Mahasiswa From CSV to Postgre with PEVN Sta
 ## Getting Started
 Berikut beberapa tahapan untuk menjalankan server backend dan frontend secara lokal
 
-## Backend
+## Backend (Andika)
 ### Installation
 
 

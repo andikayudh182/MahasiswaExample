@@ -161,7 +161,7 @@
 </template>
 
 <script>
-
+import axios from 'axios'
 
 
 export default {
@@ -176,7 +176,8 @@ export default {
             { text: 'Gender', value: 'gender' },
             { text: 'Department', value: 'department' },
             { text: 'Phone', value: 'phone' },
-            { text: 'Email', value: 'email' }
+            { text: 'Email', value: 'email' },
+            
             ],
             mahasiswa: [],
             editedIndex: -1,
@@ -217,34 +218,34 @@ export default {
       }
     },
 
-    created () {
-        this.initialize()
+    // created () {
+    //     this.initialize()
         
-    },
+    // },
       
     methods: {
         itemRowBackground: function (item) {
             return item.editedItem ? 'style-1' : 'style-2'
         },
-        initialize() {
-            this.mahasiswa = [
-            {
-                nim: '72-4584118',
-                name: 'Lammond Lucchi',
-                gender: 'Male',
-                department: 6,
-                phone: '528 123 9628',
-                email: 'llucchi0@illinois.edu'
-            },
-            {
-                nim: '39-7236358',
-                name: 'Rachele Keitch',
-                gender: 'Female',
-                department: 7,
-                phone: '750 284 2934',
-                email: 'rkeitch1@photobucket.com'
-            },
-        ]
+        // initialize() {
+        //     this.mahasiswa = [
+        //     {
+        //         nim: '72-4584118',
+        //         name: 'Lammond Lucchi',
+        //         gender: 'Male',
+        //         department: 6,
+        //         phone: '528 123 9628',
+        //         email: 'llucchi0@illinois.edu'
+        //     },
+        //     {
+        //         nim: '39-7236358',
+        //         name: 'Rachele Keitch',
+        //         gender: 'Female',
+        //         department: 7,
+        //         phone: '750 284 2934',
+        //         email: 'rkeitch1@photobucket.com'
+        //     },
+        // ]
         
         // },
         // validation() {
@@ -290,13 +291,22 @@ export default {
         if (this.editedIndex > -1) {
           Object.assign(this.mahasiswa[this.editedIndex], this.editedItem)
         } else {
-          this.mahasiswa.push(this.editedItem)
+          this.mahasiswa.concat(this.editedItem,this.mahasiswa)
         }
         this.close()
     },
-    
+    mounted(){
+        axios
+            .get('http://localhost:3000/api/mahasiswa/')
+            .then(response => {
+                this.mahasiswa = response.data.data
+                console.log(response.data)
+            })
+            .catch(error => console.log(error))
+
     }
-}
+    }
+
 
 </script>
 

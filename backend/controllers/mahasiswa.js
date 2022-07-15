@@ -1,5 +1,7 @@
 const Mahasiswa = require('../models').Mahasiswa;
 const db = require('../db/index')
+const Joi = require('joi')
+// const { body, validationResult } = require('express-validator');
 
 module.exports = {
   list(req, res) {
@@ -42,10 +44,26 @@ module.exports = {
       .catch((error) => res.status(400).send(error));
   },
 
-    async add(req, res, next) {
-    
-   
-        const mahasiswa = req.body
+   async add(req,res) {
+        const schema = Joi.object({ 
+          nim: Joi.string().pattern(new RegExp("[0-9]{2}-[0-9]{7}")).required(),
+          name: Joi.string() .min(6) .required(),
+          email: Joi.string().email({ tlds: { allow: false } }) .required(),
+          gender: Joi.string().valid('male','female','Male','Female').required(),
+          department:Joi.number().valid(1,2,3,4,5,6,7,8,9,10).required(),
+          phone: Joi.string().min(10).max(10).required()
+
+         });
+        
+        const validation = schema.validate(req.body);
+        console.log(validation)
+
+        if (validation.error){
+          res.status(400).send(validation.error.details)
+        }
+         
+        const mahasiswa = req.body;
+       
         const querySQL =`INSERT INTO "Mahasiswas" (nim, name, gender, department, email, phone) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`
         const paramsSQL = [
           mahasiswa.nim, 
@@ -73,7 +91,23 @@ module.exports = {
 
 
 async update(req, res, next) {
-    
+  const schema = Joi.object({ 
+    nim: Joi.string().pattern(new RegExp("[0-9]{2}-[0-9]{7}")).required(),
+    name: Joi.string() .min(6) .required(),
+    email: Joi.string().email({ tlds: { allow: false } }) .required(),
+    gender: Joi.string().valid('male','female','Male','Female').required(),
+    department:Joi.number().valid(1,2,3,4,5,6,7,8,9,10).required(),
+    phone: Joi.string().min(10).max(10).required()
+
+   });
+  
+  const validation = schema.validate(req.body);
+  console.log(validation)
+
+  if (validation.error){
+    res.status(400).send(validation.error.details)
+  }
+   
 
       const mahasiswa = req.body
       const querySQL = `UPDATE "Mahasiswas" SET name= $1, gender = $2, department = $3, email = $4, phone = $5
@@ -124,21 +158,24 @@ async delete(req, res) {
     
   },
 
-// async importCsvFile(req, res){
-//   const mahasiswa = req.body
-//   const querySQL = `COPY "Mahasiswas" (nim,name,gender,department,phone,email)
-//   FROM '$1 DELIMITER ',' CSV HEADER  `
-//   const paramsSQL = [
-//     mahasiswa.dir
-//   ]
-//   const result = ( db.query(querySQL,paramsSQL))
+async importCsvFile(req, res){
+  let mahasiswa = req.body.dir
+  let resultmahasiswa = mahasiswa.replace(/\"|\"/gi,'')
+  const querySQL = 
+  `copy public."Mahasiswas" (nim, name, gender, department, phone, email) FROM 
+  '${resultmahasiswa}' DELIMITER ',' 
+  CSV HEADER ENCODING 'UTF8' `
+  // const paramsSQL = [
+  //   mahasiswa.dir
+  // ]
+  const result = (await db.query(querySQL))
+
+      // res.setHeader('Content-Type', 'application/csv');
+      res.status(200).send({
+      message:`import data csv berhasil`,
+      data :result
+    })
 
   
-//       res.status(200).send({
-//       message:`import data csv berhasil`,
-//       data :result
-//     })
-
-  
-// }
+}
 };

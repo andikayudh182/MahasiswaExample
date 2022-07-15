@@ -11,7 +11,7 @@ router.get('/', function(req, res, next) {
 router.get('/api/mahasiswa', mahasiswaController.list);
 router.get('/api/mahasiswa/:id', mahasiswaController.getbyNIM);
 router.post('/api/mahasiswa', mahasiswaController.add);
-// router.post('/api/importmahasiswa/', mahasiswaController.importCsvFile);
+router.post('/api/importmahasiswa/', mahasiswaController.importCsvFile);
 router.put('/api/mahasiswa/:id', mahasiswaController.update);
 router.delete('/api/mahasiswa/:id', mahasiswaController.delete);
 

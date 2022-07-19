@@ -1,6 +1,8 @@
 const Mahasiswa = require('../models').Mahasiswa;
+const Department = require('../models').Department;
 const db = require('../db/index')
-const Joi = require('joi')
+const Joi = require('joi');
+
 // const { body, validationResult } = require('express-validator');
 
 module.exports = {
@@ -45,12 +47,55 @@ module.exports = {
   },
 
    async add(req,res) {
+    // cara 1
+    //   await db.query(`SELECT * FROM "Departments" WHERE id = ${req.body.department}`, []).then((results) => {
+
+    //     if(results.rows.length>0){
+    //       console.log( results[0] + " gas ")
+
+    //     } else {
+    //       res.status(400).send({ message :'data department tidak ditemukan'})
+    //     }
+  
+    
+    // }).catch(function(err){
+    
+    //     console.log("Error:" + String(err));
+    
+    // });
+
+     await Department.findAndCountAll({
+      where: {
+        id : req.body.department
+      },
+      attributes: { 
+        exclude: ['createdAt', 'updatedAt']
+       }
+    }).then((results)=> {
+          if(JSON.stringify(results.count)> 0){
+          console.log(" gas ")
+
+        } else {
+          res.status(400).send({ message :'data department tidak ditemukan'})
+        }
+      // console.log("ini results id  " + JSON.stringify(results.count))
+       
+    }).catch(function(err){
+    
+          console.log("Error:" + String(err));
+      
+      });
+   
+
+     
+      
+      
         const schema = Joi.object({ 
           nim: Joi.string().pattern(new RegExp("[0-9]{2}-[0-9]{7}")).required(),
           name: Joi.string() .min(6) .required(),
           email: Joi.string().email({ tlds: { allow: false } }) .required(),
-          gender: Joi.string().valid('male','female','Male','Female').required(),
-          department:Joi.number().valid(1,2,3,4,5,6,7,8,9,10).required(),
+          gender: Joi.string().valid('1','2').required(),
+          department:Joi.number().valid().required(),
           phone: Joi.string().min(10).max(10).required()
 
          });
@@ -95,8 +140,8 @@ async update(req, res, next) {
     nim: Joi.string().pattern(new RegExp("[0-9]{2}-[0-9]{7}")).required(),
     name: Joi.string() .min(6) .required(),
     email: Joi.string().email({ tlds: { allow: false } }) .required(),
-    gender: Joi.string().valid('male','female','Male','Female').required(),
-    department:Joi.number().valid(1,2,3,4,5,6,7,8,9,10).required(),
+    gender: Joi.string('1','2').valid('').required(),
+    department:Joi.number().valid().required(),
     phone: Joi.string().min(10).max(10).required()
 
    });

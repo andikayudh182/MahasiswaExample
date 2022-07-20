@@ -1,6 +1,9 @@
 <template>
     <tr>
-    <td>{{ nim }}</td>
+    <td>
+        {{ nim }}
+        asdasd
+        </td>
     <td>{{ name }}</td>
     <td>{{ gender }}</td>
     <td>{{ department }}</td>
@@ -24,6 +27,27 @@
     }
     export default {
         props: ['nim','name','gender','department','phone','email'],
+        nimRules: [
+                v => !!v || 'NIM is required',
+                v => v.length == 10 || 'NIM harus 10 digit',
+            ],
+            nameRules: [
+                v => !!v || 'Name is required',
+            ],
+            genderRules: [
+                v => !!v || 'Gender is required',
+                v => v === 'Male'|| v === 'Female' || 'Male or Female'
+            ],
+            departmentRules: [
+                v => !!v || 'Department is required',
+                v => v === [('1','2','3','4','5')] || 'Department is 1 - 13'
+            ],
+            phoneRules: [
+                v => !!v || 'Phone is required'
+            ],
+            emailRules: [
+                v => !!v || 'Email is required'
+            ], 
         validate: function(dataItem) {
 
         }

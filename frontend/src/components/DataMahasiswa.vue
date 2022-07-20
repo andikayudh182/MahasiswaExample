@@ -14,7 +14,6 @@
         <tbody>
             <RowTable v-for='(mhs, index) in mahasiswa' :key="index" v-bind="mhs"/>
         </tbody>
-        
     </table>
     <div>
         <button
@@ -58,9 +57,10 @@ export default {
                 this.startPage += 10
                 this.endPage += 10
             }
-            this.listPage = this.mahasiswa.slice(this.startPage, this.endPage)
+            this.mahasiswa = this.listPage.slice(this.startPage, this.endPage)
         }
     },
+    
     mounted() {
         axios
             .get('http://localhost:3000/api/mahasiswa/')

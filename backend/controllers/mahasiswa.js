@@ -86,10 +86,6 @@ module.exports = {
       
       });
    
-
-     
-      
-      
         const schema = Joi.object({ 
           nim: Joi.string().pattern(new RegExp("[0-9]{2}-[0-9]{7}")).required(),
           name: Joi.string() .min(6) .required(),

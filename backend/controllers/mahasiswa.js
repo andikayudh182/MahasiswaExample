@@ -87,12 +87,12 @@ module.exports = {
       });
    
         const schema = Joi.object({ 
-          nim: Joi.string().pattern(new RegExp("[0-9]{2}-[0-9]{7}")).required(),
+          nim: Joi.string().pattern(new RegExp("^[0-9]{2}-[0-9]{7}$")).required(),
           name: Joi.string() .min(6) .required(),
           email: Joi.string().email({ tlds: { allow: false } }) .required(),
           gender: Joi.string().valid('1','2').required(),
           department:Joi.number().valid().required(),
-          phone: Joi.string().min(10).max(10).required()
+          phone: Joi.string().min(12).max(12).pattern(new RegExp("^[0-9]{3}[ ][0-9]{3}[ ][0-9]{4}$")).required()
 
          });
         
@@ -132,15 +132,38 @@ module.exports = {
 
 
 async update(req, res, next) {
-  const schema = Joi.object({ 
-    nim: Joi.string().pattern(new RegExp("[0-9]{2}-[0-9]{7}")).required(),
-    name: Joi.string() .min(6) .required(),
-    email: Joi.string().email({ tlds: { allow: false } }) .required(),
-    gender: Joi.string('1','2').valid('').required(),
-    department:Joi.number().valid().required(),
-    phone: Joi.string().min(10).max(10).required()
+  
+  await Department.findAndCountAll({
+    where: {
+      id : req.body.department
+    },
+    attributes: { 
+      exclude: ['createdAt', 'updatedAt']
+     }
+  }).then((results)=> {
+        if(JSON.stringify(results.count)> 0){
+        console.log(" gas ")
 
-   });
+      } else {
+        res.status(400).send({ message :'data department tidak ditemukan'})
+      }
+    // console.log("ini results id  " + JSON.stringify(results.count))
+     
+  }).catch(function(err){
+  
+        console.log("Error:" + String(err));
+    
+    });
+  
+    const schema = Joi.object({ 
+      nim: Joi.string().pattern(new RegExp("^[0-9]{2}-[0-9]{7}$")).required(),
+      name: Joi.string() .min(6) .required(),
+      email: Joi.string().email({ tlds: { allow: false } }) .required(),
+      gender: Joi.string().valid('1','2').required(),
+      department:Joi.number().valid().required(),
+      phone: Joi.string().min(12).max(12).pattern(new RegExp("^[0-9]{3}[ ][0-9]{3}[ ][0-9]{4}$")).required()
+
+     });
   
   const validation = schema.validate(req.body);
   console.log(validation)

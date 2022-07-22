@@ -18,6 +18,7 @@ router.delete('/api/mahasiswa/:id', mahasiswaController.delete);
 
 /* Departmen Router */
 router.get('/api/department', departmentController.list);
+router.get('/api/distinctdepartment', departmentController.distinct);
 router.get('/api/department/:id', departmentController.getById);
 router.post('/api/department', departmentController.add);
 // router.post('/api/importmahasiswa/', mahasiswaController.importCsvFile);

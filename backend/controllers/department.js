@@ -141,4 +141,23 @@ async delete(req, res) {
     }
 
 },
+
+async distinct(req, res) {
+   
+  const querySQL = `SELECT DISTINCT id FROM "Departments"`
+  const result = ( await db.query(querySQL)).rows
+
+  if(Object.keys(result).length > 0){
+      res.status(200).send({
+      message:`distinct data berhasil`,
+      data :result
+    })
+  } else {
+      res.status(400).send({
+      message : 'distinct data gagal tidak ditemukan',
+      
+    })
+  }
+
+},
 };

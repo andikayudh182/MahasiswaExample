@@ -69,7 +69,7 @@ module.exports = {
         ]
         const result = (await db.query(querySQL, paramsSQL)).rows   
         
-        if(Object.keys(result).length > 0){
+        if(Object.keys(result).data > 0){
             res.status(200).send({
             message:`Insert  data department  berhasil`,
             data : result

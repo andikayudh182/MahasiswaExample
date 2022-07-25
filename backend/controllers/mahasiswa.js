@@ -22,13 +22,13 @@ module.exports = {
         }))
       .catch((error) => { res.status(400).send(error); });
   },
-  async listJoinDepartment(req, res) {
-   
+  async listJoinDepartment(req, res,next) {
+   try{
     const querySQL = 
     `SELECT * FROM "Mahasiswas" as mhs
     LEFT OUTER JOIN "Departments" as dpr ON
     dpr.id = mhs.department`
-    const result = ( await db.query(querySQL)).rows
+    const result = (await db.query(querySQL)).rows
 
     if(Object.keys(result).length > 0){
         res.status(200).send({
@@ -41,6 +41,10 @@ module.exports = {
         
       })
     }
+   } catch (error){
+    next(error)
+   }
+   
 
 },
   getbyNIM(req, res) {

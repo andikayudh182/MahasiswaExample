@@ -13,6 +13,7 @@ router.get('/api/mahasiswa', mahasiswaController.list);
 router.get('/api/mahasiswa/:id', mahasiswaController.getbyNIM);
 router.get('/api/mahasiswacount/:id', mahasiswaController.countNIM);
 router.get('/api/mahasiswajoin/', mahasiswaController.listJoinDepartment);
+router.post('/api/mahasiswajoin/', mahasiswaController.listJoinDepartmentWithLimit);
 router.post('/api/mahasiswa', mahasiswaController.add);
 // router.post('/api/mahasiswafind', mahasiswaController.findDuplicateNIM);
 router.post('/api/importmahasiswa/', mahasiswaController.importCsvFile);

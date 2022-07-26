@@ -27,7 +27,8 @@ module.exports = {
     const querySQL = 
     `SELECT * FROM "Mahasiswas" as mhs
     LEFT OUTER JOIN "Departments" as dpr ON
-    dpr.id = mhs.department`
+    dpr.id = mhs.department 
+     `
     const result = (await db.query(querySQL)).rows
 
     if(Object.keys(result).length > 0){
@@ -45,6 +46,33 @@ module.exports = {
     next(error)
    }
    
+
+},
+
+async listJoinDepartmentWithLimit(req, res,next) {
+  try{
+   const querySQL = 
+   `SELECT * FROM "Mahasiswas" as mhs
+   LEFT OUTER JOIN "Departments" as dpr ON
+   dpr.id = mhs.department LIMIT 10 OFFSET ${req.body.offset}
+    `
+   const result = (await db.query(querySQL)).rows
+
+   if(Object.keys(result).length > 0){
+       res.status(200).send({
+       message:`Get data mahasiswa join department berhasil`,
+       data : result
+     })
+   } else {
+       res.status(400).send({
+       message : 'Get data mahasiswa join department gagal',
+       
+     })
+   }
+  } catch (error){
+   next(error)
+  }
+  
 
 },
   getbyNIM(req, res) {
@@ -274,6 +302,7 @@ async countNIM(req, res) {
     
 
 },
+
 
 
   

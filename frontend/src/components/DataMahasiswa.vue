@@ -1,91 +1,61 @@
 <template>
-
-    <div class="overflow-auto">
+    <div class="ma-4">
       <!-- Text Field NIM -->
-            <v-row>
-                <v-col cols="2"> 
-                    <v-text-field
-                        v-model="keyword"
-                        label="Search"
-                     
-                
-                    ></v-text-field>
-                </v-col>
-            </v-row>
-
-   
-
-             <!-- Action Button -->
-            <v-row>
-              
-                <v-col cols="1"> 
-                    <!-- <router-link style="text-decoration:none;" :to="`/mahasiswa/1}/`"> -->
-                    <v-btn
-                        color="primary"
-                        @click.stop ="search"
+        <v-row >
+            <v-col cols="2" class="justify-end"> 
+                <v-text-field
+                    v-model="keyword"
+                    label="Search"
+                    solo
                     
-                    >
-                    Search
-                    </v-btn>
-                    <!-- </router-link> -->
-                </v-col>
-            </v-row>
-
-             <!-- <v-row>
-              
-                <v-col cols="1"> 
-                    <v-btn
-                        color="primary"
-                        @click.stop ="resultSearch"
-                    
-                    >
-                    result
-                    </v-btn>
-                </v-col>
-            </v-row> -->
-
-
-            <p> search keyword value : {{ keyword }}</p>
-           
-
-    <table class=" cell-border table table-bordered table-striped mt-5" >
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>NIM</th>
-                <th>Name</th>
-                <th>Gender</th>
-                <th>Department</th>
-                <th>Phone</th>
-                <th>Email</th>
-                <th>Action</th>
             
-            </tr>            
-        </thead>
-        <tbody>
-            <RowTable v-for='(mhs,index) in mahasiswa' :key="index" v-bind="mhs"/>
-        </tbody>
-    
-    </table>
-    
-    <p> Showing from row : {{ editedLimit.limit+1 }} to {{ editedLimit.limit+10}} </p>
-    
+                >
+                </v-text-field>
+            </v-col>
+                <v-col>
+                    <v-btn
+                    height="49"
+                    color="primary"
+                    @click.stop ="search"
 
+                >
+                Search
+                </v-btn>
+                </v-col>
+        </v-row>
+        <!-- Action Button -->
 
-     <div class="text-center">
-          <router-link style="text-decoration:none;" :to="`/mahasiswa/${this.page}/`">
-        <v-pagination
-        v-model="page"
-        :length="100"
-            :total-visible="7"
-        @change="page = $event.target.value"
-        circle
-        ></v-pagination>
-         </router-link>
+        <table class=" cell-border table table-bordered table-striped" >
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>NIM</th>
+                    <th>Name</th>
+                    <th>Gender</th>
+                    <th>Department</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Action</th>
+                
+                </tr>            
+            </thead>
+            <tbody>
+                <RowTable v-for='(mhs,index) in mahasiswa' :key="index" v-bind="mhs"/>
+            </tbody>
+        </table>
+        <p> Showing from row : {{ editedLimit.limit+1 }} to {{ editedLimit.limit+10}} </p>
+        <div class="text-center">
+            <router-link style="text-decoration:none;" :to="`/mahasiswa/${this.page}/`">
+                <v-pagination
+                v-model="page"
+                :length="100"
+                :total-visible="7"
+                @change="page = $event.target.value"
+                circle
+                ></v-pagination>
+            </router-link>
+        </div>
     </div>
-    </div>
-    
-        
 </template>
 
 <script>
@@ -213,4 +183,10 @@ export default {
 }
 
 </script>
+
+<style>
+    .table {
+        text-align: center;
+    }
+</style>
 

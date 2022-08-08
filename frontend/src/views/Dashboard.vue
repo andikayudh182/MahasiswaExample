@@ -1,16 +1,15 @@
 <template>
-  <DashboardComponents />
+  <DataMahasiswa />
 </template>
 
 <script>
-import DashboardComponents  from '../components/DashboardComponents'
+import DataMahasiswa from '../components/DataMahasiswa.vue'
 
   export default {
  
 
     components: {
-      DashboardComponents
-      
-    },
+    DataMahasiswa
+},
   }
 </script>

@@ -40,7 +40,7 @@ const routes = [
   
   //Router List Actor
    {
-    path: '/actor',
+    path: '/import',
     component: ActorList
   },
    //Router List Mahasiswa

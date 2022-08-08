@@ -35,6 +35,7 @@
                  <router-link style="text-decoration:none;" :to="`/mahasiswa/edit/${mhsid}/`">
                             <v-icon                
                                 class="mr-2"
+                                color="primary"
                             >
                                 mdi-pencil
                             </v-icon>
@@ -42,6 +43,7 @@
                        <v-icon     
                                 class="mr-2"
                                 @click.stop="dialog=true"
+                                color="#E53935"
                                 
                             >
                                 mdi-delete
@@ -49,17 +51,30 @@
 
                         <v-dialog
                         v-model="dialog"
-                        max-width="290"
+                        max-width="500"
                         >
                         <v-card>
-                            <v-card-text> Apakah anda mau menghapus data dengan ID {{ mhsid }}</v-card-text>
-                            <v-card-action>
+                            <v-card-title
+                            class="text-h4"
+                            >
+                                Delete Confirmation
+                            </v-card-title>
+                            <v-card-text
+                            
+                            class="mt-4 text-h5 font-weight-medium"
+                            > 
+                                Are you sure want to delete row {{ mhsid }} ?
+                            </v-card-text>
+                            <v-card-action class="d-flex flex-row justify-end">
                                 <v-btn
                                 @click.stop="deleteItem(mhsid)"
+                                @click="dialogAlert = true"
+
                                 text>
                                     Agree
                                 </v-btn>
                                   <v-btn
+                                  color="#E53935"
                                   @click.stop="dialog=false"
                                   text
                                   >
@@ -67,7 +82,14 @@
                                 </v-btn>
                             </v-card-action>
                         </v-card>
+                        <v-alert
+                            type="success"
+                            v-model="dialogAlert"
+                            >
+                                Delete Success!
+                            </v-alert>
                         </v-dialog>
+                         
                         
 
             </td>
@@ -91,7 +113,8 @@ const validatorNew = SimpleVueValidation.Validator
                 duplikatNim:'',
                 phoneNew:'',
                 emailNew:'',
-                dialog:false
+                dialog:false,
+                dialogAlert: false
 
                 
 
@@ -145,15 +168,24 @@ const validatorNew = SimpleVueValidation.Validator
         },
        
             methods: {
+                alert() {
+                    setTimeout(()=> {
+                        this.dialogAlert=false
+                    }, 5000)
+                },
                 deleteItem(idMhs){
                     axios
                 .delete(`http://localhost:3000/api/mahasiswa/${idMhs}`)
                 .then(response => {
                             
-                   
+                
                     console.log(response.data)
-                    
+                this.dialogAlert = true
+                setTimeout(()=> {
+                        this.dialogAlert=false
+                    }, 5000)
                 window.location.reload();
+                
                 })
                 .catch(error => console.log(error))
 
@@ -310,7 +342,7 @@ const validatorNew = SimpleVueValidation.Validator
                     return validatorNew.value(value).custom(async function(){
                         var result = ''
                         await axios
-                            .get(`http://localhost:3000/api/mahasiswa/${this.nim}`)
+                            .get(`http://localhost:3000/api/mahasiswaByNIM/${this.nim}`)
                             .then(response => {
                             var nimAxios = parseInt(response.data.jumlah)
                                 console.log(nimAxios + 'ini data duplikat nya')
@@ -331,17 +363,19 @@ const validatorNew = SimpleVueValidation.Validator
                     );
 
                 },
-                phoneNew: function (value) {
+            //     phoneNew: function (value) {
 
-                     return validatorNew.value(value).required();
+            //          return validatorNew.value(value).required();
              
-            },
+            // },
                 emailNew: function (value){
                     return validatorNew.value(value).required().email();
                 }
 
          },
-
+        created() {
+            
+        },
             computed:{
                 validateNewNIM(){ 
 
@@ -349,10 +383,10 @@ const validatorNew = SimpleVueValidation.Validator
                 
 
                     if (!this.nim?.length > 0){
-                        nimValidate.push('nim tidak boleh kosong')
+                        nimValidate.push('Required.')
                     } 
 
-                     if (!this.nim?.match("^[0-9]{2}-[0-9]{7}$")){
+                    else if (!this.nim?.match("^[0-9]{2}-[0-9]{7}$")){
                             
                             nimValidate.push('2angka-7angka')
                         } 
@@ -363,7 +397,7 @@ const validatorNew = SimpleVueValidation.Validator
                     var nameValidate = []
 
                      if (!this.name?.length > 0){
-                        nameValidate.push('nama tidak boleh kosong')
+                        nameValidate.push('Required.')
                     } 
 
                     if (this.name?.length < 6){
@@ -377,9 +411,11 @@ const validatorNew = SimpleVueValidation.Validator
                 },
                 validateNewPhone(){
                     var phoneValidate = []
-
-                   
-                    if (!this.phone?.match("^[0-9]{3}[ ][0-9]{3}[ ][0-9]{4}$")){
+                    if (!this.phone?.length > 0) {
+                        phoneValidate.push('Required.')
+                    }
+                    
+                    else if (!this.phone?.match("^[0-9]{3}[ ][0-9]{3}[ ][0-9]{4}$")){
                         phoneValidate.push('3spasi3spasi4angka')
                     } 
 

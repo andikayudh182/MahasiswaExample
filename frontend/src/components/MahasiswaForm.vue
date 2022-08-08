@@ -114,7 +114,7 @@
                                 <v-btn
                                     @click.stop ="dialog = !dialog"
                                     color="primary"
-                                    :to= "'/mahasiswa'"
+                                    :to= "'/mahasiswa/:page'"
                                     
                                 >
                                     OK

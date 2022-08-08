@@ -4,7 +4,7 @@
             app
         >
             <v-app-bar-nav-icon @click.stop="drawer = !drawer"> </v-app-bar-nav-icon>
-            <v-toolbar-title>Validation Data After Import</v-toolbar-title>
+            <v-toolbar-title>Dashboard</v-toolbar-title>
             
             <v-spacer></v-spacer>
                  <v-switch
@@ -23,23 +23,6 @@
          
         >
 
-            <!-- Avatar Admin -->
-            <v-row justify="center" class="mt-5">
-                <v-col cols="7">
-                    <v-avatar
-                        size="150"
-                    >
-                        <img src="/191524034.jpg" alt="">
-                    </v-avatar>
-                </v-col>
-            </v-row>
-
-            <!-- Nama Admin -->
-            <v-row justify="center" class="mt-5">
-                <v-col cols="8"> 
-                    <p app>Andika Yudha Riyanto </p>
-                </v-col>
-            </v-row>
 
 
             <v-list
@@ -73,11 +56,9 @@ export default {
         return {
             drawer :false,
             items:[
-                {icon:'mdi-microsoft-xbox', title:'Dashboard', route:'/'},
-                {icon:'mdi-account', title:'List Actor', route:'/actor'},
-                {icon:'mdi-apps', title:'List Category', route:'/category'},
-                {icon:'mdi-account-plus', title:'Register Actor', route:'/actor/register-new-actor'},
-                {icon:'mdi-plus-outline', title:'Register Category', route:'/category/register-new-category'}
+                {icon:'mdi-microsoft-xbox', title:'Dashboard', route:'/mahasiswa/:page'},
+                {icon:'mdi-account-plus', title:'Register Mahasiswa', route:'/mahasiswaregistration'},
+                {icon:'mdi-file-import', title:'Import File', route:'/import'},
             ],
              darkMode: false
         }

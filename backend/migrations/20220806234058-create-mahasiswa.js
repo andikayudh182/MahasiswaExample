@@ -2,6 +2,12 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('Mahasiswas', {
+      id: {
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+        type: Sequelize.INTEGER
+      },
       nim: {
         type: Sequelize.STRING
       },
@@ -20,14 +26,7 @@ module.exports = {
       email: {
         type: Sequelize.STRING
       },
-      
-
-    },{
-      define: {
-        timestamps :false, 
-        createdAt: false,
-         updatedAt: false,
-      }
+   
     });
   },
   async down(queryInterface, Sequelize) {

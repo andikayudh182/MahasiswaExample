@@ -1,5 +1,7 @@
 var express = require('express');
+// const { date } = require('joi');
 var router = express.Router();
+
 // const db = require('../db/index')
 
 const mahasiswaController = require('../controllers').mahasiswa;
@@ -8,13 +10,23 @@ const departmentController = require('../controllers').department;
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
+
+/* Router for upload file */
+
+router.get('/api/file', (req,res) =>{
+  res.sendFile('./index.html', { root:'.' })
+})
+
+router.post('/api/file',mahasiswaController.uploadFile)
 /* Mahasiswa Router */
 router.get('/api/mahasiswa', mahasiswaController.list);
-router.get('/api/mahasiswa/:id', mahasiswaController.getbyNIM);
+router.get('/api/mahasiswa/:id', mahasiswaController.getbyId);
+router.get('/api/mahasiswaByNIM/:id', mahasiswaController.getbyNIM);
 router.get('/api/mahasiswacount/:id', mahasiswaController.countNIM);
 router.get('/api/mahasiswajoin/', mahasiswaController.listJoinDepartment);
 router.post('/api/mahasiswajoin/', mahasiswaController.listJoinDepartmentWithLimit);
 router.post('/api/mahasiswa', mahasiswaController.add);
+router.post('/api/mahasiswa/search', mahasiswaController.searchMahasiswa);
 // router.post('/api/mahasiswafind', mahasiswaController.findDuplicateNIM);
 router.post('/api/importmahasiswa/', mahasiswaController.importCsvFile);
 router.put('/api/mahasiswa/:id', mahasiswaController.update);

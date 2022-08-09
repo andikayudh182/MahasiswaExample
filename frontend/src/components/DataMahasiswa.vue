@@ -48,7 +48,7 @@
             <router-link style="text-decoration:none;" :to="`/mahasiswa/${this.page}/`">
                 <v-pagination
                 v-model="page"
-                :length="100"
+                :length="lengthpage"
                 :total-visible="7"
                 @change="page = $event.target.value"
                 circle
@@ -80,7 +80,7 @@ export default {
             keyword:'',
             keywordClicked:false,
 
-        
+            lengthpage:'',
             page : null
         }
     },
@@ -104,7 +104,13 @@ export default {
     },
   },
 
+  
+
+
+
     created(){
+
+        this.resultIdCount()
         if(this.keywordClicked){
             this.search()
         }
@@ -116,6 +122,8 @@ export default {
         console.log(this.$route.params.page + 'testing console don')
 
     },
+
+   
 
     
 
@@ -138,11 +146,25 @@ export default {
                     // Tampilkan dialog regitrasi gagal
                  
                     console.log(error)
-                }) 
+                })
+                
+        
 
                 //  console.log(this.mahasiswa)
 
         },
+
+        resultIdCount(){
+             axios
+                .get(`http://localhost:3000/api/mahasiswacountId/`)
+                .then(response =>{
+                    this.lengthpage = response.data.data[0].resultid
+                    console.log(response.data.data[0].resultid+ "masuk")
+                            
+                })
+                .catch(error => console.log(error))
+        },
+
 
          search(){
            
@@ -174,7 +196,8 @@ export default {
         
         
        
-    }
+    },
+    
 
  
 

@@ -17,7 +17,7 @@
 
         <v-navigation-drawer
             v-model="drawer"
-            absolute
+  
             app
             temporary
          
@@ -56,7 +56,7 @@ export default {
         return {
             drawer :false,
             items:[
-                {icon:'mdi-microsoft-xbox', title:'Dashboard', route:'/mahasiswa/:page'},
+                {icon:'mdi-microsoft-xbox', title:'Dashboard', route:'/mahasiswa/1'},
                 {icon:'mdi-account-plus', title:'Register Mahasiswa', route:'/mahasiswaregistration'},
                 {icon:'mdi-file-import', title:'Import File', route:'/import'},
             ],

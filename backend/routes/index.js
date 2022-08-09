@@ -24,6 +24,7 @@ router.get('/api/mahasiswa/:id', mahasiswaController.getbyId);
 router.get('/api/mahasiswaByNIM/:id', mahasiswaController.getbyNIM);
 router.get('/api/mahasiswacount/:id', mahasiswaController.countNIM);
 router.get('/api/mahasiswajoin/', mahasiswaController.listJoinDepartment);
+router.get('/api/mahasiswacountId/', mahasiswaController.countID);
 router.post('/api/mahasiswajoin/', mahasiswaController.listJoinDepartmentWithLimit);
 router.post('/api/mahasiswa', mahasiswaController.add);
 router.post('/api/mahasiswa/search', mahasiswaController.searchMahasiswa);

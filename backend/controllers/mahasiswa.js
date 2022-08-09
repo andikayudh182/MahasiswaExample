@@ -349,6 +349,26 @@ async delete(req, res) {
         }
     
   },
+
+async countID(req, res) {
+   
+    const querySQL = `SELECT COUNT(id)/10 as resultid FROM "Mahasiswas"`
+  
+    const result = ( await db.query(querySQL)).rows
+
+    if(Object.keys(result).length > 0){
+        res.status(200).send({
+        message:`counting id berhasil`,
+        data : result
+      })
+    } else {
+        res.status(400).send({
+        message : 'counting id gagal',
+        
+      })
+    }
+
+},
 async countNIM(req, res) {
    
         const querySQL = `SELECT COUNT("nim") FROM "Mahasiswas" AS "Mahasiswa" WHERE "Mahasiswa"."nim" = $1`
@@ -370,6 +390,8 @@ async countNIM(req, res) {
     
 
 },
+
+
 
 
 

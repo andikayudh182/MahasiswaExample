@@ -22,10 +22,22 @@
                 Search
                 </v-btn>
                 </v-col>
+                   
         </v-row>
-        <!-- Action Button -->
 
-        <table class=" cell-border table table-bordered table-striped" >
+         <v-col>
+                    <v-btn
+                    height="49"
+                    color="green"
+                    @click.stop ="exportPDF"
+
+                >
+                export
+                </v-btn>
+                </v-col>
+        <!-- Action Button -->
+        <h1 id="title">data mahasiswa</h1>
+        <table class=" cell-border table table-bordered table-striped"  >
             <thead>
                 <tr>
                     <th>ID</th>
@@ -61,7 +73,11 @@
 <script>
 import RowTable from "./RowTable.vue"
 import axios from 'axios'
-// import $ from 'jquery'
+import jsPDF from "jspdf";
+import autoTable from 'jspdf-autotable';
+
+const doc = new jsPDF()
+
 
 
 export default {
@@ -73,6 +89,7 @@ export default {
     data() {
         return {     
             mahasiswa: [],
+            // allMahasiswa:[],
             listPage: [],
             editedLimit:{
                 limit: this.$route.params.page * 10 - 10
@@ -118,7 +135,7 @@ export default {
              this.initiatePage()
 
         }
-       
+      
         console.log(this.$route.params.page + 'testing console don')
 
     },
@@ -137,9 +154,10 @@ export default {
                     data: this.editedLimit
                 })
                 .then(response => {
+                    
                 this.keywordClicked = false,
                      this.mahasiswa = response.data.data
-                    console.log(response.data)
+                    console.log( + 'tes this mahasiswa')
                      console.log("jumlah offset" + this.editedLimit.limit)
                 })
                 .catch(error => {
@@ -147,6 +165,8 @@ export default {
                  
                     console.log(error)
                 })
+
+                
                 
         
 
@@ -190,6 +210,42 @@ export default {
                 //  console.log(this.mahasiswa)
 
         },
+
+        async exportPDF(){
+            let allMahasiswa = []
+         await axios
+                .get(`http://localhost:3000/api/mahasiswajoin/`)
+                .then(response =>{
+                      response.data.data.forEach(element => {
+                 
+                        allMahasiswa.push([
+                            element.mhsid,
+                            element.nim,
+                            element.name,
+                            element.gender,
+                            element.department_name,
+                            element.phone,
+                            element.email]) 
+                            
+                    
+                    });
+             
+                })
+                .catch(error => console.log(error))
+
+            
+            autoTable(doc, {
+  
+            head: [['ID', 'NIM', 'Name', 'Gender', 'Department', 'Phone', 'Email']],
+            body: allMahasiswa,
+   
+  
+            })
+
+            doc.save('table.pdf')
+
+          
+        }
 
       
 

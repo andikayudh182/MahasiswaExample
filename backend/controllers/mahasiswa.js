@@ -25,9 +25,10 @@ module.exports = {
   async listJoinDepartment(req, res,next) {
    try{
     const querySQL = 
-    `SELECT * FROM "Mahasiswas" as mhs
+    `SELECT mhs.id as mhsid,nim,name,gender,department,phone,email,dpr.department_name FROM "Mahasiswas" as mhs
     LEFT OUTER JOIN "Departments" as dpr ON
-    dpr.id = mhs.department LIMIT 10 OFFSET 0 
+    dpr.id = mhs.department 
+    ORDER BY mhsid ASC 
      `
     const result = (await db.query(querySQL)).rows
 
